@@ -33,7 +33,7 @@ runTests(varargin, fun_handles);
 function honesty()
 % Type your full name and uni (both in string) to state your agreement 
 % to the Code of Academic Integrity.
-signAcademicHonestyPolicy('Peter Parker', 'pp117');
+signAcademicHonestyPolicy('Rohit Kumar Sharma', 'rsharma54');
 
 %--------------------------------------------------------------------------
 % Test for Walkthrough 1: Morphological operations
@@ -50,7 +50,7 @@ hw2_walkthrough1;
 %%
 function challenge1a()
 img_list = {'two_objects', 'many_objects_1', 'many_objects_2'};
-%threshold_list = [???, ???, ???];
+threshold_list = [.5, .5, .5];
 
 for i = 1:length(img_list)
     orig_img = imread([img_list{i} '.png']);
