@@ -91,6 +91,7 @@ for obj_label = 1 : obj_count
     fprintf("Moments: %f %f\n", E_Min, E_Max);
     
     roundedness = E_Min / E_Max;
+    fprintf("Roundedness: %f\n\n", roundedness);
     
     db(1, obj_label) = obj_label;
     db(2, obj_label) = x_center;
