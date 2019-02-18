@@ -34,7 +34,7 @@ function [db, out_img] = compute2DProperties(orig_img, labeled_img)
 obj_count = max(labeled_img(:));
 [ht, wid] = size(orig_img);
 
-db = zeros(6, obj_count);
+db = zeros(7, obj_count);
 
 fh1 = figure();
 imshow(orig_img);
@@ -99,6 +99,9 @@ for obj_label = 1 : obj_count
     db(4, obj_label) = E_Min;
     db(5, obj_label) = orientation;
     db(6, obj_label) = roundedness;
+    
+    % Extra properties
+    db(7, obj_label) = area;
     
     hold on;
     % Plot Center
