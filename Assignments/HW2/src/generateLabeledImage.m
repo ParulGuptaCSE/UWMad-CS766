@@ -10,3 +10,5 @@ imshow(labeled_img);
 
 %rgb_img = label2rgb(labeled_img, 'jet', 'k'); 
 %imshow(rgb_img); % now much better!
+
+delete(fh);

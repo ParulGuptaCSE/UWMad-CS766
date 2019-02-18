@@ -112,7 +112,8 @@ for obj_label = 1 : obj_count
 end
 
 annotated_img = saveAnnotatedImg(fh1);
-figure; imshow(annotated_img);
+fh2 = figure; imshow(annotated_img);
+delete(fh1); delete(fh2);
 
 imwrite(annotated_img, 'annotated_img_own.png');
 

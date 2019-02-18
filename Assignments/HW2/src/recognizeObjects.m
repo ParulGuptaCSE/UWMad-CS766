@@ -1,6 +1,7 @@
 function output_img = recognizeObjects(orig_img, labeled_img, obj_db)
     [obj_props, ~] = compute2DProperties(orig_img, labeled_img);
-    threshold = .02625;
+    round_diff_thres = .02625;  % threshold for difference in roundedness to match
+    E_min_percent_thres = 15.0; % threshold for difference in E_min percent to match
     
     fh_fin = figure('Name', 'Final');
     imshow(orig_img);
@@ -14,8 +15,12 @@ function output_img = recognizeObjects(orig_img, labeled_img, obj_db)
             db_props = obj_db(:, db_obj);
             
             % Compare objs: true if E_min and roundedness are same
-            if abs(props(6) - db_props(6)) < threshold
+            roundedness_diff = abs(props(6) - db_props(6));
+            E_min_percent_diff = abs(props(4) - db_props(4)) / db_props(4) * 100;
+            if roundedness_diff < round_diff_thres && E_min_percent_diff < E_min_percent_thres
                 fprintf("Match found\n");
+                %fprintf("Db roundedness: %f\tObj roundedness: %f\n", db_props(6), props(6));
+                %fprintf("Db E_min: %f\tObj E_min: %f\n", db_props(4), props(4));
                 % Plot center and orientation is same obj
                 hold on;
                 % Plot Center
@@ -31,26 +36,29 @@ function output_img = recognizeObjects(orig_img, labeled_img, obj_db)
     end
     
     output_img = saveAnnotatedImg(fh_fin);
-    figure; imshow(output_img);
+    fh_out = figure; imshow(output_img);
+    delete(fh_fin);
+end
 
 function annotated_img = saveAnnotatedImg(fh)
-figure(fh); % Shift the focus back to the figure fh
+    figure(fh); % Shift the focus back to the figure fh
 
-% The figure needs to be undocked
-set(fh, 'WindowStyle', 'normal');
+    % The figure needs to be undocked
+    set(fh, 'WindowStyle', 'normal');
 
-% The following two lines just to make the figure true size to the
-% displayed image. The reason will become clear later.
-img = getimage(fh);
-truesize(fh, [size(img, 1), size(img, 2)]);
+    % The following two lines just to make the figure true size to the
+    % displayed image. The reason will become clear later.
+    img = getimage(fh);
+    truesize(fh, [size(img, 1), size(img, 2)]);
 
-% getframe does a screen capture of the figure window, as a result, the
-% displayed figure has to be in true size. 
-frame = getframe(fh);
-frame = getframe(fh);
-pause(0.5); 
-% Because getframe tries to perform a screen capture. it somehow 
-% has some platform depend issues. we should calling
-% getframe twice in a row and adding a pause afterwards make getframe work
-% as expected. This is just a walkaround. 
-annotated_img = frame.cdata;
+    % getframe does a screen capture of the figure window, as a result, the
+    % displayed figure has to be in true size. 
+    frame = getframe(fh);
+    frame = getframe(fh);
+    pause(0.5); 
+    % Because getframe tries to perform a screen capture. it somehow 
+    % has some platform depend issues. we should calling
+    % getframe twice in a row and adding a pause afterwards make getframe work
+    % as expected. This is just a walkaround. 
+    annotated_img = frame.cdata;
+end
