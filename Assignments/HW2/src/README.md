@@ -1,8 +1,12 @@
 # Computer Vision, Spring 2019
 ## Homework 2
+### Walkthrough 1:
+* Value of threshold to convert gray-level to binary image: `0.4`
+* Number of dilations followed by erosions to remove the noise: `5`
+* Number of erosions followed by dilations to remove the rice grains: `10`
 
 ### Challenge 1a:
-Value of threshold: `0.5`
+- Value of threshold to convert gray-level to binary image: `0.5`
 
 ### Challenge 1b: 
 Additional property, _Area of the object_ is stored in the 7th row of the object database.

@@ -18,7 +18,7 @@ function output_img = recognizeObjects(orig_img, labeled_img, obj_db)
             roundedness_diff = abs(props(6) - db_props(6));
             E_min_percent_diff = abs(props(4) - db_props(4)) / db_props(4) * 100;
             if roundedness_diff < round_diff_thres && E_min_percent_diff < E_min_percent_thres
-                fprintf("Match found\n");
+                %fprintf("Match found\n");
                 %fprintf("Db roundedness: %f\tObj roundedness: %f\n", db_props(6), props(6));
                 %fprintf("Db E_min: %f\tObj E_min: %f\n", db_props(4), props(4));
                 % Plot center and orientation is same obj
