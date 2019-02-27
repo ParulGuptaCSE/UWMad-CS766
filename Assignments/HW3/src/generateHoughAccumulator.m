@@ -12,7 +12,7 @@ function hough_img = generateHoughAccumulator(img, theta_num_bins, rho_num_bins)
                 for theta_bin_idx = 1 : theta_num_bins
                     theta = theta_bin_idx * max_theta / theta_num_bins;
                     rho = col * cosd(theta) - row * sind(theta);
-                    rho_bin_idx = abs(ceil(rho * rho_num_bins / max_rho));
+                    rho_bin_idx = abs(round(rho * rho_num_bins / max_rho));
                     % fprintf("True vals: (%f, %f)\n", theta, rho);
                     % fprintf("Bin vals: (%d, %d)\n", theta_bin_idx, rho_bin_idx);
                     if rho_bin_idx > 0 && rho_bin_idx <= rho_num_bins
