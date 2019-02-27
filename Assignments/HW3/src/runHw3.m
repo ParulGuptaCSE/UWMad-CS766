@@ -47,11 +47,11 @@ hw3_walkthrough1;
 %%
 function challenge1a()
 img_list = {'hough_1', 'hough_2', 'hough_3'};
+edge_thresh = {0.1055, 0.1055, 0.1055};
 for i = 1:length(img_list)
     img = imread([img_list{i} '.png']);
-    %edge_img = edge(??);
+    edge_img = edge(img, 'sobel', edge_thresh{i});
     
-        
     % Note: The output from edge is an image of logical type.
     % Here we cast it to double before saving it.
     imwrite(im2double(edge_img), ['edge_' img_list{i} '.png']);
@@ -61,8 +61,8 @@ end
 function challenge1b()
 img_list = {'hough_1', 'hough_2', 'hough_3'};
 
-% rho_num_bins = ??;
-% theta_num_bins = ??;
+rho_num_bins = 770; % ~ hypotenuse of 640x426 imgs
+theta_num_bins = 180;   % 360 degrees / 2
 for i = 1:length(img_list)
     img = imread(['edge_' img_list{i} '.png']);
     hough_accumulator = generateHoughAccumulator(img,...
@@ -78,7 +78,7 @@ end
 function challenge1c()
 
 img_list = {'hough_1', 'hough_2', 'hough_3'};
-%hough_threshold = [?? ?? ??];
+hough_threshold = [100, 100, 100];
 
 for i = 1:length(img_list)
     orig_img = imread([img_list{i} '.png']);
