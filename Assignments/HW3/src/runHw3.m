@@ -61,8 +61,8 @@ end
 function challenge1b()
 img_list = {'hough_1', 'hough_2', 'hough_3'};
 
-rho_num_bins = 770; % ~ hypotenuse of 640x426 imgs
-theta_num_bins = 180;   % 360 degrees / 2
+rho_num_bins = 800; % ~ hypotenuse of 640x426 imgs
+theta_num_bins = 180;   % 360 degrees / 2, 1 degree per bin
 for i = 1:length(img_list)
     img = imread(['edge_' img_list{i} '.png']);
     hough_accumulator = generateHoughAccumulator(img,...
@@ -78,7 +78,7 @@ end
 function challenge1c()
 
 img_list = {'hough_1', 'hough_2', 'hough_3'};
-hough_threshold = [100, 100, 100];
+hough_threshold = [120, 70, 100];
 
 for i = 1:length(img_list)
     orig_img = imread([img_list{i} '.png']);
