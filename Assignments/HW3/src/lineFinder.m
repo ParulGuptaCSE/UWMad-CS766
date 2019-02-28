@@ -10,7 +10,7 @@ function line_detected_img = lineFinder(orig_img, hough_img, hough_threshold)
             if hough_img(theta, rho) > hough_threshold
                 theta_val = theta * 180 / theta_max;
                 rho_val = max_rho * (rho / (rho_max / 2) - 1);
-                fprintf("rho = %f theta = %f\n", rho_val, theta_val);
+                % fprintf("rho = %f theta = %f\n", rho_val, theta_val);
                 x = 1 : ht;
                 y = x * tand(theta_val) + rho_val * secd(theta_val);
                 plot(y, x, 'Color', 'g');
