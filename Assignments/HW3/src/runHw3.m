@@ -47,7 +47,7 @@ hw3_walkthrough1;
 %%
 function challenge1a()
 img_list = {'hough_1', 'hough_2', 'hough_3'};
-edge_thresh = {0.1055, 0.1055, 0.1055};
+edge_thresh = {0.1055, 0.06, 0.07};
 for i = 1:length(img_list)
     img = imread([img_list{i} '.png']);
     edge_img = edge(img, 'sobel', edge_thresh{i});
@@ -78,7 +78,7 @@ end
 function challenge1c()
 
 img_list = {'hough_1', 'hough_2', 'hough_3'};
-hough_threshold = [120, 70, 100];
+hough_threshold = [110, 50, 150];
 
 for i = 1:length(img_list)
     orig_img = imread([img_list{i} '.png']);
@@ -98,7 +98,7 @@ end
 function challenge1d()
 
 img_list = {'hough_1', 'hough_2', 'hough_3'};
-hough_threshold = [120, 70, 100];
+hough_threshold = [110, 50, 150];
 
 for i = 1:length(img_list)
     orig_img = imread([img_list{i} '.png']);
