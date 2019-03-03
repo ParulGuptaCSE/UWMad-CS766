@@ -47,7 +47,7 @@ hw3_walkthrough1;
 %%
 function challenge1a()
 img_list = {'hough_1', 'hough_2', 'hough_3'};
-edge_thresh = {0.1055, 0.06, 0.07};
+edge_thresh = {0.1055, 0.06, 0.06};
 for i = 1:length(img_list)
     img = imread([img_list{i} '.png']);
     edge_img = edge(img, 'sobel', edge_thresh{i});
