@@ -78,7 +78,7 @@ end
 function challenge1c()
 
 img_list = {'hough_1', 'hough_2', 'hough_3'};
-hough_threshold = [110, 50, 150];
+hough_threshold = [100, 50, 150];
 
 for i = 1:length(img_list)
     orig_img = imread([img_list{i} '.png']);
@@ -98,7 +98,7 @@ end
 function challenge1d()
 
 img_list = {'hough_1', 'hough_2', 'hough_3'};
-hough_threshold = [110, 50, 150];
+hough_threshold = [100, 50, 150];
 
 for i = 1:length(img_list)
     orig_img = imread([img_list{i} '.png']);
