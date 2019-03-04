@@ -1,11 +1,17 @@
 function cropped_line_img = lineSegmentFinder(orig_img, hough_img, hough_threshold)
-    edge_img = im2double(edge(orig_img, 'sobel', .06));
+    % edge_img = im2double(edge(orig_img, 'sobel', .06));
+    if hough_threshold == 60
+        edge_thresh = 0.135;
+    else
+        edge_thresh = 0.1;
+    end
+    edge_img = im2double(edge(orig_img, 'canny', edge_thresh));
     % imshow(edge_img);
     [theta_max, rho_max] = size(hough_img);
                     
     % Convolve with a circular filter of radius 3 to find
     % if any pixels exist in the edges image
-    filter = ones(7, 7);  % fspecial('disk', 10);
+    % filter = ones(7, 7);  % fspecial('disk', 10);
     % Perform convolution 
     % convolved_img = imfilter(edge_img, filter, 'conv', 'replicate');
     convolved_img = bwmorph(edge_img, 'dilate', 1);
@@ -44,7 +50,7 @@ function cropped_line_img = lineSegmentFinder(orig_img, hough_img, hough_thresho
                         X(2) = x;
                         Y(2) = y;
                         % fprintf("(%d, %d) (%d, %d)\n", X(1), Y(1), X(2), Y(2));
-                        plot(Y, X, 'Color', 'g');
+                        plot(Y, X, 'Color', 'g', 'LineWidth', 1.3);
                     end
                     x = x + .1;
                 end

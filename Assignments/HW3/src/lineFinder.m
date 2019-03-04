@@ -13,7 +13,7 @@ function line_detected_img = lineFinder(orig_img, hough_img, hough_threshold)
                 % fprintf("rho = %f theta = %f\n", rho_val, theta_val);
                 x = 1 : ht;
                 y = x * tand(theta_val) + rho_val * secd(theta_val);
-                plot(y, x, 'Color', 'g');
+                plot(y, x, 'Color', 'g', 'LineWidth', 1);
             end
         end
     end

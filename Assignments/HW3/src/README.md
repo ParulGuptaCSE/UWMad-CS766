@@ -5,17 +5,17 @@
 * _Canny_ edge detection threshold: `0.18`
 
 ### Challenge 1a - `detect edges`:
-- _Sobel_ edge detection algorithm is used. 
-- Value of thresholds used to detect edges in `hough_1.png`, `hough_2.png`, and `hough_3.png` are `0.1055`, `0.06`, and `0.06` respectively.
+- _Canny_ edge detection algorithm is used. 
+- Value of thresholds used to detect edges in `hough_1.png`, `hough_2.png`, and `hough_3.png` are `0.1`, `0.1`, and `0.135` respectively.
 
 ### Challenge 1b - `generateHoughAccumulator()`:
 **Finetuning Hough Accumulator resolution:** 
 To perform Hough Transform in theta-rho space, the number of bins used in each axis are as follows:
 
-&theta;: 180 
-&rho;: 1600
+&theta;: 240
+&rho;: 900
 
-The reason for this is each bin in theta space can correspond to 1 degree and each bin in rho space corresponds to 1 pixel unit of distance. Therefore, theta space captures all possible orientations from 1 degree to 180 degrees. Similarly, the maximum possible distance of a line is the length of the maximum diagonal given for all the images which is approximately 800 pixels. Therefore all possible distances from -800 pixels to +800 pixels will be captured at a level of 1 pixel distance per bin.
+The reason for this is each bin in theta space can correspond to 0.75 degrees and each bin in rho space corresponds to approximately 1 pixel unit of distance. Therefore, theta space captures all possible orientations from 1 degree to 180 degrees. Similarly, the maximum possible distance of a line is the length of the maximum diagonal given for all the images which is approximately 800 pixels. Therefore by leaving some margin for error, all possible distances from -800 pixels to +800 pixels will be captured at a level of approximately 1 pixel distance per bin.
 
 **Voting Scheme:**
 For voting, each bin in the accumulator array is used instead of a patch of few nearby bins. This is because the resolution chosen is just right and neither too low to deteriorate the accuracy nor too high so that it is inefficient.
@@ -23,7 +23,7 @@ For voting, each bin in the accumulator array is used instead of a patch of few 
 In conclusion, the resolution of the Hough Accumulator chosen along with the voting algorithm gives decent results for the given images.
 
 ### Challenge 1c - `lineFinder()`:
-Given the Hough accumulator returned by `generateHoughAccumulator()` in Challenge 1b, a standard threshold mechanism is used to find Hough peaks that correspond to edge lines in each image. The value of thresholds used for `hough_1.png`, `hough_2.png`, and `hough_3.png` are `110`, `50`, and `150` respectively.
+Given the Hough accumulator returned by `generateHoughAccumulator()` in Challenge 1b, a standard threshold mechanism is used to find Hough peaks that correspond to edge lines in each image. The value of thresholds used for `hough_1.png`, `hough_2.png`, and `hough_3.png` are `115`, `53.8`, and `60` respectively.
 
 The Hough accumulator is scanned and the corresponding &theta; and &rho; values for which the value accumulated is greater than the threshold are noted. The corresponding lines given by each pair of (&theta;, &rho;) values are then plotted onto the original image to indicate edge lines.
 

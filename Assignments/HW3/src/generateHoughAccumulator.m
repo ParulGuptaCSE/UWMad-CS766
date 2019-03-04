@@ -33,6 +33,4 @@ function hough_img = generateHoughAccumulator(img, theta_num_bins, rho_num_bins)
             hough_img(row, col) = ceil((hough_img(row, col) - min_val) / (max_val - min_val) * 255);
         end
     end
-    
-    imshow(hough_img);
 end
