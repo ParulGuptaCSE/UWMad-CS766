@@ -1,7 +1,6 @@
 function result_img = ...
     showCorrespondence(orig_img, warped_img, src_pts_nx2, dest_pts_nx2)
     
-    % TODO: Check if we can use horzcat
     single_img = horzcat(orig_img, warped_img);
     fh = figure();
     imshow(single_img); hold on;
@@ -15,5 +14,5 @@ function result_img = ...
     end
      
     result_img = saveAnnotatedImg(fh);
-    delete(fh);
+    % delete(fh);
 end

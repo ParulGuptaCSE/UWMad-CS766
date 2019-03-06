@@ -69,6 +69,7 @@ H_3x3 = computeHomography(src_pts_nx2, dest_pts_nx2);
 test_pts_nx2 = [367.2614 314.4205; 316.1250 490.5568; 421.2386 438.8523; 464.9886 186.0114];
 
 % Apply homography
+% test_pts_nx2 = src_pts_nx2;
 dest_pts_nx2 = applyHomography(H_3x3, test_pts_nx2);
 % test_pts_nx2 and dest_pts_nx2 are the coordinates of corresponding points 
 % of the two images, and H is the homography.
