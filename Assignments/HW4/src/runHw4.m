@@ -87,20 +87,26 @@ bg_img = im2double(imread('Osaka.png')); %imshow(bg_img);
 portrait_img = im2double(imread('portrait_small.png')); %imshow(portrait_img);
 
 % Estimate homography
-% portrait_pts = [xp1 yp1; xp2 yp2; xp3 yp3; xp4 yp4];
-% bg_pts = [xb1 yb1; xb2 yb2; xb3 yb3; xb4 yb4];
+portrait_pts = [0.8036 0.38745; 325.62 1.9631; 326.75 398.81; 1.4789 398.81];
+bg_pts = [101 19.152; 278.13 71.032; 285.54 425.05; 83.706 438.64];
+
+% figure(); imshow(portrait_img);
+% hold on; plot(portrait_pts(:, 1), portrait_pts(:, 2), 'lineWidth', 3);
+% figure(); imshow(bg_img);
+% hold on; plot(bg_pts(:, 1), bg_pts(:, 2), 'lineWidth', 3);
 
 H_3x3 = computeHomography(portrait_pts, bg_pts);
 
 dest_canvas_width_height = [size(bg_img, 2), size(bg_img, 1)];
 
 % Warp the portrait image
-[mask, dest_img] = backwardWarpImg(portrait_img, inv(H_3x3), dest_canvas_width_height);
+% TODO: Initially, inverse Homography was being passed. Check why!!!
+[mask, dest_img] = backwardWarpImg(portrait_img, H_3x3, dest_canvas_width_height);
 % mask should be of the type logical
 mask = ~mask;
 % Superimpose the image
 result = bg_img .* cat(3, mask, mask, mask) + dest_img;
-%figure, imshow(result);
+figure, imshow(result);
 imwrite(result, 'Van_Gogh_in_Osaka.png');
 
 %%  
