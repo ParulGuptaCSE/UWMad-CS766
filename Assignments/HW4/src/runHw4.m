@@ -124,8 +124,8 @@ before_img = showCorrespondence(imgs, imgd, xs, xd);
 imwrite(before_img, 'before_ransac.png');
 
 % Use RANSAC to reject outliers
-%ransac_n = ??; % Max number of iteractions
-%ransac_eps = ??; Acceptable alignment error 
+ransac_n = 250;      % Max number of iteractions
+ransac_eps = 20;   % Acceptable alignment error 
 
 [inliers_id, H_3x3] = runRANSAC(xs, xd, ransac_n, ransac_eps);
 

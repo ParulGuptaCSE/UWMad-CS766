@@ -21,5 +21,9 @@ function [mask, result_img] = backwardWarpImg(src_img, resultToSrc_H,...
         end
     end
     
-    % figure(); imshow(mask);
+%     class(result_img)
+%     [x, y, z] = meshgrid(1 : dest_canvas_width_height(2));
+%     [xi, yi, zi] = meshgrid(1 : dest_canvas_width_height(2));
+%     result_img = interp3(x, y, z, double(result_img), xi, yi, zi, 'linear');
+    figure(); imshow(result_img);
 end
