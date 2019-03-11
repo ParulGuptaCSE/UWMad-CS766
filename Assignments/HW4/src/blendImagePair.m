@@ -32,7 +32,7 @@ function out_img = blendImagePair(wrapped_imgs, masks, wrapped_imgd, maskd, mode
 %         imshow(wrapped_imgs);
 %         figure('Name', 'Dest img');
 %         imshow(wrapped_imgd);
-%         out_img = wrapped_imgs .* cat(3, maskd, maskd, maskd) + wrapped_imgd;
+        out_img = wrapped_imgs .* cat(3, maskd, maskd, maskd) + wrapped_imgd;
 %         figure('Name', 'Overlayed img');
 %         imshow(out_img);
     elseif strcmp(mode, 'blend')
