@@ -1,49 +1,48 @@
 function stitched_img = stitchImg(varargin)
+    % RANSAC parameters:
+    ransac_n = 200;         % Max number of iteractions
+    ransac_eps = 10;        % Acceptable alignment error 
+
+    reference_img = varargin{ceil(nargin / 2)};
     
-%     reference_img = ceil(nargin / 2);
-    img_left = varargin{1}; img_c = varargin{2}; img_right = varargin(3);
-    
-    [xs, xd] = genSIFTMatches(img_left, img_c);
-    % xs and xd are the centers of matched frames
-    % xs and xd are nx2 matrices, where the first column contains the x
-    % coordinates and the second column contains the y coordinates
+    for img_idx = 1 : nargin
+        if img_idx ~= ceil(nargin / 2)
+            img = varargin{img_idx};
+            
+            [xs, xd] = genSIFTMatches(img, reference_img);
+            
+            [inliers, H_3x3] = runRANSAC(xs, xd, ransac_n, ransac_eps);
+            
+            dest_canvas_wid_ht = [size(reference_img, 2), size(reference_img, 1)];
+            [mask, res_img] = backwardWarpImg(img, H_3x3, dest_canvas_wid_ht);
+            
+            % Extending the canvas size if image is beyond current canvas
+            extra_wid = size(mask, 2) - size(reference_img, 2);
+            if extra_wid > 0
+                % If the image is to the left of reference img, extend canvas
+                % on the left. Else, right
+                if img_idx < ceil(nargin / 2)
+                    reference_img = horzcat(zeros(size(reference_img, 1), extra_wid, 3), reference_img);
+                else
+                    reference_img = horzcat(reference_img, zeros(size(reference_img, 1), extra_wid, 3));
+                end
+            end
+            extra_ht = size(mask, 1) - size(reference_img, 1);
+            if extra_ht > 0
+                reference_img = vertcat(zeros(ceil(extra_ht / 2), size(reference_img, 2), 3), reference_img, zeros(floor(extra_ht / 2), size(reference_img, 2), 3));
+            end
+            figure('Name', 'Center with bounding box'), imshow(reference_img);
 
-    before_img = showCorrespondence(img_left, img_c, xs, xd);
-%     figure('Name', 'Before RANSAC'), imshow(before_img);
-%     imwrite(before_img, 'before_ransac.png');
+            fprintf("Size of mask: %dx%d\nSize of imgc: %dx%dx%d\n", size(mask), size(reference_img));
+        %     figure('Name', 'Mask'), imshow(mask);
+            mask = ~mask;
+            % Superimpose the image
+            reference_img = reference_img .* cat(3, mask, mask, mask) + res_img;
+            figure('Name', 'Blending'), imshow(reference_img);
 
-    % Use RANSAC to reject outliers
-    ransac_n = 200;      % Max number of iteractions
-    ransac_eps = 10;   % Acceptable alignment error 
-
-    [inliers_id, H_3x3] = runRANSAC(xs, xd, ransac_n, ransac_eps);
-
-    after_img = showCorrespondence(img_left, img_c, xs(inliers_id, :), xd(inliers_id, :));
-%     figure('Name', 'After RANSAC'), imshow(after_img);
-%     imwrite(after_img, 'after_ransac.png');
-
-    dest_canvas_width_height = [size(img_c, 2), size(img_c, 1)];
-    [mask, res_img] = backwardWarpImg(img_left, H_3x3, dest_canvas_width_height);
-    figure('Name', 'After backward warping'), imshow(res_img);
-    
-    % Bounding box:
-    extra_wid = size(mask, 2) - size(img_c, 2);
-    extra_ht = size(mask, 1) - size(img_c, 1);
-    if extra_wid > 0
-        img_c = horzcat(zeros(size(img_c, 1), extra_wid, 3), img_c);
+%             stitched_img = blendImagePair(res_img, mask, reference_img, mask, 'overlay');
+%             figure('Name', 'After Blending'), imshow(stitched_img);
+        end
     end
-    if extra_ht > 0
-        img_c = vertcat(zeros(ceil(extra_ht / 2), size(img_c, 2), 3), img_c, zeros(floor(extra_ht / 2), size(img_c, 2), 3));
-    end
-    figure('Name', 'Center with bounding box'), imshow(img_c);
-    
-    fprintf("Size of mask: %dx%d\nSize of imgc: %dx%dx%d\n", size(mask), size(img_c));
-%     figure('Name', 'Mask'), imshow(mask);
-    mask = ~mask;
-    % Superimpose the image
-    result = img_c .* cat(3, mask, mask, mask) + res_img;
-    figure('Name', 'Blending'), imshow(result);
-    
-    stitched_img = blendImagePair(res_img, mask, img_c, mask, 'overlay');
-    figure('Name', 'After Blending'), imshow(stitched_img);
+    stitched_img = reference_img;
 end

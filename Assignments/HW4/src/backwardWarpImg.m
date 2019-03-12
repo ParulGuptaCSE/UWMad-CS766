@@ -9,10 +9,14 @@ function [mask, result_img] = backwardWarpImg(src_img, resultToSrc_H,...
     
     % Computing bounding box:
     min_x = min(transformed_pts(:, 1));
+    max_x = max(transformed_pts(:, 1));
     min_y = min(transformed_pts(:, 2));
 %     fprintf("Canvas size before: %fx%f)\n", dest_canvas_width_height(1), dest_canvas_width_height(2));
     if min_x < 0
         dest_canvas_width_height(1) = ceil(dest_canvas_width_height(1) - min_x);
+    end
+    if max_x > dest_canvas_width_height(1)
+        dest_canvas_width_height(1) = ceil(max_x);
     end
     if min_y < 0
         dest_canvas_width_height(2) = ceil(dest_canvas_width_height(2) - 2 * min_y);
@@ -23,8 +27,12 @@ function [mask, result_img] = backwardWarpImg(src_img, resultToSrc_H,...
     result_img = zeros(dest_canvas_width_height(2), dest_canvas_width_height(1), 3);
     
     for idx = 1 : size(transformed_pts, 1)
-        y = round(transformed_pts(idx, 1) - min_x);
+        y = transformed_pts(idx, 1);
+        if min_x < 0
+            y = y - min_x;
+        end
         x = round(transformed_pts(idx, 2) - min_y);
+        y = round(y);
         if x > 0 && x < size(mask, 1) && y > 0 && y < size(mask, 2)
             mask(x, y) = 1;
             result_img(x, y, 1) = src_img(src_pts(idx, 2), src_pts(idx, 1), 1);
