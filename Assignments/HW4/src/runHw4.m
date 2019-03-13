@@ -103,6 +103,7 @@ dest_canvas_width_height = [size(bg_img, 2), size(bg_img, 1)];
 % TODO: Initially, inverse Homography was being passed. Check why!!!
 [mask, dest_img] = backwardWarpImg(portrait_img, H_3x3, dest_canvas_width_height);
 % mask should be of the type logical
+[X_, Y_] = find(mask);
 mask = ~mask;
 % Superimpose the image
 result = bg_img .* cat(3, mask, mask, mask) + dest_img;
@@ -165,3 +166,14 @@ imwrite(stitched_img, 'mountain_panorama.png');
 %%
 function challenge1f()
 % Your own panorama
+
+% stitch three images
+img0 = im2single(imread('Bloomberg-0.jpg'));
+img1 = im2single(imread('Bloomberg-1.jpg'));
+img2 = im2single(imread('Bloomberg-2.jpg'));
+% img3 = im2single(imread('Bloomberg-3.jpg'));
+
+% You are free to change the order of input arguments
+stitched_img = stitchImg(img0, img1, img2);
+%figure, imshow(stitched_img);
+imwrite(stitched_img, 'manhattan_panorama.png');

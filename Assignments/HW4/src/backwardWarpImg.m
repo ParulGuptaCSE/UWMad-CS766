@@ -11,6 +11,7 @@ function [mask, result_img] = backwardWarpImg(src_img, resultToSrc_H,...
     min_x = min(transformed_pts(:, 1));
     max_x = max(transformed_pts(:, 1));
     min_y = min(transformed_pts(:, 2));
+    max_y = max(transformed_pts(:, 2));
 %     fprintf("Canvas size before: %fx%f)\n", dest_canvas_width_height(1), dest_canvas_width_height(2));
     if min_x < 0
         dest_canvas_width_height(1) = ceil(dest_canvas_width_height(1) - min_x);
@@ -19,7 +20,7 @@ function [mask, result_img] = backwardWarpImg(src_img, resultToSrc_H,...
         dest_canvas_width_height(1) = ceil(max_x);
     end
     if min_y < 0
-        dest_canvas_width_height(2) = ceil(dest_canvas_width_height(2) - 2 * min_y);
+        dest_canvas_width_height(2) = ceil(dest_canvas_width_height(2) - 2 * min_y);% + (max_y - dest_canvas_width_height(2)));
     end
     fprintf("Canvas size after: %fx%f)\n", dest_canvas_width_height(1), dest_canvas_width_height(2));
     
@@ -28,11 +29,15 @@ function [mask, result_img] = backwardWarpImg(src_img, resultToSrc_H,...
     
     for idx = 1 : size(transformed_pts, 1)
         y = transformed_pts(idx, 1);
+        x = transformed_pts(idx, 2);
         if min_x < 0
             y = y - min_x;
         end
-        x = round(transformed_pts(idx, 2) - min_y);
+        if min_y < 0
+            x = x - min_y;
+        end
         y = round(y);
+        x = round(x);
         if x > 0 && x < size(mask, 1) && y > 0 && y < size(mask, 2)
             mask(x, y) = 1;
             result_img(x, y, 1) = src_img(src_pts(idx, 2), src_pts(idx, 1), 1);
