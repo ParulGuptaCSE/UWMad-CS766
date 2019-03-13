@@ -12,6 +12,7 @@ function [mask, result_img] = backwardWarpImg(src_img, resultToSrc_H,...
     max_x = max(transformed_pts(:, 1));
     min_y = min(transformed_pts(:, 2));
     max_y = max(transformed_pts(:, 2));
+    extra_ht_bottom = max_y - dest_canvas_width_height(2);
 %     fprintf("Canvas size before: %fx%f)\n", dest_canvas_width_height(1), dest_canvas_width_height(2));
     if min_x < 0
         dest_canvas_width_height(1) = ceil(dest_canvas_width_height(1) - min_x);
@@ -20,7 +21,10 @@ function [mask, result_img] = backwardWarpImg(src_img, resultToSrc_H,...
         dest_canvas_width_height(1) = ceil(max_x);
     end
     if min_y < 0
-        dest_canvas_width_height(2) = ceil(dest_canvas_width_height(2) - 2 * min_y);% + (max_y - dest_canvas_width_height(2)));
+        dest_canvas_width_height(2) = ceil(dest_canvas_width_height(2) - min_y);% + (max_y - dest_canvas_width_height(2)));
+    end
+    if extra_ht_bottom > 0
+        dest_canvas_width_height(2) = ceil(dest_canvas_width_height(2) + extra_ht_bottom);
     end
     fprintf("Canvas size after: %fx%f)\n", dest_canvas_width_height(1), dest_canvas_width_height(2));
     
