@@ -1,7 +1,7 @@
 # Computer Vision, Spring 2019
 ## Homework 4 - `Image Mosaicking App`
 ### Challenge 1a - [Homography](https://en.wikipedia.org/wiki/Homography_(computer_vision)):
-Computes Homography, `H`, which relates the transformation of a source image to a destination image. Given a homography, `H`, for every source point `p<sub>s</sub>`, the corresponding destination point, `p<sub>d</sub>` is given by `p<sub>d</sub> = H * p<sub>s</sub>`.
+Computes Homography, `H`, which relates the transformation of a source image to a destination image. Given a homography, `H`, for every source point _p<sub>s</sub>_, the corresponding destination point, _p<sub>d</sub>_ is given by _p<sub>d</sub> = H * p<sub>s</sub>_.
 
 ### Challenge 1b - Warping an Image to Canvas:
 Given a source image and the result to source homography, this routine transforms the source image and warps it onto the canvas. After tranformation, there might be some places in the destination which might not have corresponded to any pixel due to stretching. Hence, it also uses `interp2` inbuilt function to interpolate the missing pixels.
