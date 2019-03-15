@@ -8,10 +8,7 @@ function [inliers_id, H] = runRANSAC(Xs, Xd, ransac_n, eps)
         H_3x3 = computeHomography(x_src, x_dest);
         
         inliers_idx = getInliers(H_3x3, Xs, Xd, eps);
-%         fprintf("Size inliers: %d\n", size(inliers_idx, 2));
-%         fprintf("Size ret: %d\n", size(inliers_id, 2));
         if size(inliers_idx, 2) > size(inliers_id, 2)
-%             fprintf("Found some Inliers\n");
             H = H_3x3;
             inliers_id = inliers_idx;
         end
@@ -23,11 +20,8 @@ function inliers_idx = getInliers(H, x_s, x_d, err)
     inliers_idx = zeros(size(x_d, 1));
     inl_idx = 1;
     for idx = 1 : size(x_d, 1)
-%         transformed_pts(idx, :)
-%         x_d(idx, :)
         l2_norm = norm(transformed_pts(idx, :) - x_d(idx, :));
         if l2_norm < err
-%             fprintf("Better Norm: %f\n", l2_norm);
             inliers_idx(inl_idx) = idx;
             inl_idx = inl_idx + 1;
         end
