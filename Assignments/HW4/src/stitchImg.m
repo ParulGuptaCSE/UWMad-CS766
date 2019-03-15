@@ -1,7 +1,7 @@
 function stitched_img = stitchImg(varargin)
     % RANSAC parameters:
-    ransac_n = 200;         % Max number of iteractions
-    ransac_eps = 10;        % Acceptable alignment error 
+    ransac_n = 30;         % Max number of iteractions
+    ransac_eps = 2;        % Acceptable alignment error 
 
     reference_img = varargin{ceil(nargin / 2)};
     for img_idx = 1 : nargin
