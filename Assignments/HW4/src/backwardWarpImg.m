@@ -1,60 +1,40 @@
 function [mask, result_img] = backwardWarpImg(src_img, resultToSrc_H,...
     dest_canvas_width_height)
-  
-    src_x_pts = (1 : size(src_img, 2));
-    src_y_pts = (1 : size(src_img, 1));
-    [X, Y] = meshgrid(src_x_pts, src_y_pts);
-    src_pts = [X(:) Y(:)];
-    transformed_pts = applyHomography(resultToSrc_H, src_pts);
     
-    % Computing bounding box:
-    min_x = min(transformed_pts(:, 1));
-    max_x = max(transformed_pts(:, 1));
-    min_y = min(transformed_pts(:, 2));
-    max_y = max(transformed_pts(:, 2));
-    extra_ht_bottom = max_y - dest_canvas_width_height(2);
-%     fprintf("Canvas size before: %fx%f)\n", dest_canvas_width_height(1), dest_canvas_width_height(2));
-    if min_x < 0
-        dest_canvas_width_height(1) = ceil(dest_canvas_width_height(1) - min_x);
-    end
-    if max_x > dest_canvas_width_height(1)
-        dest_canvas_width_height(1) = ceil(max_x);
-    end
-    if min_y < 0
-        dest_canvas_width_height(2) = ceil(dest_canvas_width_height(2) - min_y);% + (max_y - dest_canvas_width_height(2)));
-    end
-    if extra_ht_bottom > 0
-        dest_canvas_width_height(2) = ceil(dest_canvas_width_height(2) + extra_ht_bottom);
-    end
-    fprintf("Canvas size after: %fx%f)\n", dest_canvas_width_height(1), dest_canvas_width_height(2));
+    % Extract different color channels of the src img
+    red_s = src_img(:, :, 1);
+    gre_s = src_img(:, :, 2);
+    blu_s = src_img(:, :, 3);
+
+    dest_ht = dest_canvas_width_height(1);
+    dest_wid = dest_canvas_width_height(2);
+
+    [src_ht, src_wid, ~] = size(src_img);
+
+    % Calculate the corresponding source points from dest canvas to
+    % interpolate
+    [x_coord, y_coord] = meshgrid(1 : dest_ht, 1 : dest_wid);
+    src_pts = applyHomography(resultToSrc_H, [x_coord(:), y_coord(:)]);
     
-    mask = zeros(dest_canvas_width_height(2), dest_canvas_width_height(1));
-    result_img = zeros(dest_canvas_width_height(2), dest_canvas_width_height(1), 3);
+    red_d = interp2(1 : src_wid, 1 : src_ht, red_s, src_pts(:, 1), src_pts(:, 2));
+    gre_d = interp2(1 : src_wid, 1 : src_ht, gre_s, src_pts(:, 1), src_pts(:, 2));
+    blu_d = interp2(1 : src_wid, 1 : src_ht, blu_s, src_pts(:, 1), src_pts(:, 2));
     
-    for idx = 1 : size(transformed_pts, 1)
-        y = transformed_pts(idx, 1);
-        x = transformed_pts(idx, 2);
-        if min_x < 0
-            y = y - min_x;
-        end
-        if min_y < 0
-            x = x - min_y;
-        end
-        y = round(y);
-        x = round(x);
-        if x > 0 && x < size(mask, 1) && y > 0 && y < size(mask, 2)
-            mask(x, y) = 1;
-            result_img(x, y, 1) = src_img(src_pts(idx, 2), src_pts(idx, 1), 1);
-            result_img(x, y, 2) = src_img(src_pts(idx, 2), src_pts(idx, 1), 2);
-            result_img(x, y, 3) = src_img(src_pts(idx, 2), src_pts(idx, 1), 3);
-        else
-%             fprintf("(x, y): (%d, %d)\n", x, y);
-        end
-    end
+    red_d = reshape(red_d, [dest_wid, dest_ht]);
+    gre_d = reshape(gre_d, [dest_wid, dest_ht]);
+    blu_d = reshape(blu_d, [dest_wid, dest_ht]);
     
-%     class(result_img)
-%     [x, y, z] = meshgrid(1 : dest_canvas_width_height(2));
-%     [xi, yi, zi] = meshgrid(1 : dest_canvas_width_height(2));
-%     result_img = interp3(x, y, z, double(result_img), xi, yi, zi, 'linear');
-    figure('Name', 'Backward Warped'); imshow(result_img);
+    result_img(:, :, 1) = red_d;
+    result_img(:, :, 2) = gre_d;
+    result_img(:, :, 3) = blu_d;
+    
+    result_img(isnan(result_img)) = 0;
+    
+    % To compute mask, find the corners and fill region with poly2mask
+    src_corners = [1, 1; 1, src_ht; src_wid, src_ht; src_wid, 1; 1, 1];
+    dest_corners = applyHomography(inv(resultToSrc_H),src_corners);
+    
+    mask = im2double(poly2mask(dest_corners(:, 1), dest_corners(:, 2), dest_wid, dest_ht));
+
+    result_img = result_img .* cat(3, mask, mask, mask);
 end
