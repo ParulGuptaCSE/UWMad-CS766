@@ -100,10 +100,8 @@ H_3x3 = computeHomography(portrait_pts, bg_pts);
 dest_canvas_width_height = [size(bg_img, 2), size(bg_img, 1)];
 
 % Warp the portrait image
-% TODO: Initially, inverse Homography was being passed. Check why!!!
-[mask, dest_img] = backwardWarpImg(portrait_img, H_3x3, dest_canvas_width_height);
+[mask, dest_img] = backwardWarpImg(portrait_img, inv(H_3x3), dest_canvas_width_height);
 % mask should be of the type logical
-[X_, Y_] = find(mask);
 mask = ~mask;
 % Superimpose the image
 result = bg_img .* cat(3, mask, mask, mask) + dest_img;
@@ -142,11 +140,11 @@ function challenge1d()
 [horse, horse_map, horse_mask] = imread('escher_horsemen.png');
 blended_result = blendImagePair(fish, fish_mask, horse, horse_mask,...
     'blend');
-%figure, imshow(blended_result);
+figure, imshow(blended_result);
 imwrite(blended_result, 'blended_result.png');
 
 overlay_result = blendImagePair(fish, fish_mask, horse, horse_mask, 'overlay');
-%figure, imshow(overlay_result);
+figure, imshow(overlay_result);
 imwrite(overlay_result, 'overlay_result.png');
 
 %%
@@ -160,7 +158,7 @@ imgr = im2single(imread('mountain_right.png'));
 
 % You are free to change the order of input arguments
 stitched_img = stitchImg(imgl, imgc, imgr);
-%figure, imshow(stitched_img);
+figure, imshow(stitched_img);
 imwrite(stitched_img, 'mountain_panorama.png');
 
 %%
@@ -175,5 +173,5 @@ img2 = im2single(imread('Bloomberg-2.jpg'));
 
 % You are free to change the order of input arguments
 stitched_img = stitchImg(img0, img1, img2);
-%figure, imshow(stitched_img);
+figure, imshow(stitched_img);
 imwrite(stitched_img, 'manhattan_panorama.png');
