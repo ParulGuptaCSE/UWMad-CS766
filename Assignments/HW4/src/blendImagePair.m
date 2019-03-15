@@ -1,75 +1,37 @@
 function out_img = blendImagePair(wrapped_imgs, masks, wrapped_imgd, maskd, mode)
-%     % mask should be of the type logical
-%     mask = ~mask;
-%     % Superimpose the image
-%     result = bg_img .* cat(3, mask, mask, mask) + dest_img;
-%     figure, imshow(result);
-%     imwrite(result, 'Van_Gogh_in_Osaka.png');
-    
-%     fig_wraps = figure('Name', 'Wrapped Src');
-%     imshow(wrapped_imgs);
-%     fig_masks = figure('Name', 'Mask Src');
-%     imshow(masks);
-%     
-%     fig_wrapd = figure('Name', 'Wrapped Dest');
-%     imshow(wrapped_imgd);
-%     fig_maskd = figure('Name', 'Mask Dest');
-%     imshow(maskd);
-    
-    
+    class(wrapped_imgd);
+    class(maskd);
+    wrapped_imgd = im2double(wrapped_imgd);
+    % figure('Name', 'Wrapped imgd'), imshow(wrapped_imgd);
+    wrapped_imgs = im2double(wrapped_imgs);
+    masks = im2double(masks);
+    maskd = im2double(maskd);
+    %convert masks and maskd into binary masks
+    masks(masks > 0) = 1;
+    maskd(maskd > 0) = 1;
     if strcmp(mode, 'overlay')
-%         maskd = logical(maskd);
-%         figure('Name', 'Mask Dest');
-%         imshow(maskd);
         maskd = ~maskd;
-%         figure('Name', 'Invert Mask Dest');
-%         imshow(maskd);
-        wrapped_imgd = im2double(wrapped_imgd);
-        wrapped_imgs = im2double(wrapped_imgs);
-%         figure('Name', 'Mask dest img');
-%         imshow(maskd);
-%         figure('Name', 'Src img');
-%         imshow(wrapped_imgs);
-%         figure('Name', 'Dest img');
-%         imshow(wrapped_imgd);
         out_img = wrapped_imgs .* cat(3, maskd, maskd, maskd) + wrapped_imgd;
-%         figure('Name', 'Overlayed img');
-%         imshow(out_img);
     elseif strcmp(mode, 'blend')
-        masks = horzcat(ones(size(wrapped_imgs, 1), size(wrapped_imgs, 2) / 2), zeros(size(wrapped_imgs, 1), size(wrapped_imgs, 2) / 2));
-        maskd = horzcat(zeros(size(wrapped_imgd, 1), size(wrapped_imgd, 2) / 2), ones(size(wrapped_imgd, 1), size(wrapped_imgd, 2) / 2));
+        wt_masks = bwdist(~masks);
+        wt_maskd = bwdist(~maskd);
         
-%         maskd = ~maskd;
-%         figure('Name', 'Invert Mask Dest');
-%         imshow(maskd);
-        maskd = bwdist(maskd);
-%         maskd = 1 - maskd;
-%         figure('Name', 'BWdist Mask Dest');
-%         imshow(maskd);
-%         masks = ~masks;
-        masks = bwdist(masks);
-%         masks = 1 - masks;
+        wt_masks = wt_masks / max(wt_masks(:));
+        wt_maskd = wt_maskd / max(wt_maskd(:));
         
-        wrapped_imgd = im2double(wrapped_imgd);
-        wrapped_imgs = im2double(wrapped_imgs);
+        % figure('Name', 'Weighted masks'), imshow(wt_masks);
+        % figure('Name', 'Weighted maskd'), imshow(wt_maskd);
         
-        figure('Name', 'Mask src img');
-        imshow(masks);
-        figure('Name', 'Mask dest img');
-        imshow(maskd);
-        figure('Name', 'Src img');
-        imshow(wrapped_imgs);
-        figure('Name', 'Dest img');
-        imshow(wrapped_imgd);
+        wt_masks = cat(3, wt_masks, wt_masks, wt_masks);
+        wt_maskd = cat(3, wt_maskd, wt_maskd, wt_maskd);
+        wt_imgs = wrapped_imgs .* wt_masks;
+        wt_imgd = wrapped_imgd .* wt_maskd;
+        % figure('Name', 'Weighted imgs'), imshow(wt_imgs);
+        % figure('Name', 'Weighted imgd'), imshow(wt_imgd);
+        % figure('Name', 'Weighted imgs+imgd'), imshow(wt_imgs + wt_imgd);
+        % figure('Name', 'Weighted masks+maskd'), imshow(wt_masks + wt_maskd);
         
-%         maskd = logical(maskd);
-%         masks = logical(masks);
-%         out_img = (wrapped_imgs .* cat(3, maskd, maskd, maskd) + wrapped_imgd);
-        out_img = (wrapped_imgs .* cat(3, masks, masks, masks) + wrapped_imgd) + (wrapped_imgd .* cat(3, maskd, maskd, maskd) + wrapped_imgs);% + 0.5 * wrapped_imgd + .5 * wrapped_imgs;
-%         out_img = out_img .* cat(3, maskd, maskd, maskd);
-%         out_img = out_img .* cat(3, masks, masks, masks);
-        
-        figure('Name', 'Blended img');
-        imshow(out_img);
+        out_img = (wt_imgs + wt_imgd) ./ (wt_masks + wt_maskd);
+        % figure('Name', 'Out_img'), imshow(out_img);
     end
 end
