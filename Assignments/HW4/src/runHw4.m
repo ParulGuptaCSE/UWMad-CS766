@@ -69,7 +69,6 @@ H_3x3 = computeHomography(src_pts_nx2, dest_pts_nx2);
 test_pts_nx2 = [367.2614 314.4205; 316.1250 490.5568; 421.2386 438.8523; 464.9886 186.0114];
 
 % Apply homography
-% test_pts_nx2 = src_pts_nx2;
 dest_pts_nx2 = applyHomography(H_3x3, test_pts_nx2);
 % test_pts_nx2 and dest_pts_nx2 are the coordinates of corresponding points 
 % of the two images, and H is the homography.
@@ -90,11 +89,6 @@ portrait_img = im2double(imread('portrait_small.png')); %imshow(portrait_img);
 portrait_pts = [0.8036 0.38745; 325.62 1.9631; 326.75 398.81; 1.4789 398.81];
 bg_pts = [101 19.152; 278.13 71.032; 285.54 425.05; 83.706 438.64];
 
-% figure(); imshow(portrait_img);
-% hold on; plot(portrait_pts(:, 1), portrait_pts(:, 2), 'lineWidth', 3);
-% figure(); imshow(bg_img);
-% hold on; plot(bg_pts(:, 1), bg_pts(:, 2), 'lineWidth', 3);
-
 H_3x3 = computeHomography(portrait_pts, bg_pts);
 
 dest_canvas_width_height = [size(bg_img, 2), size(bg_img, 1)];
@@ -105,7 +99,7 @@ dest_canvas_width_height = [size(bg_img, 2), size(bg_img, 1)];
 mask = ~mask;
 % Superimpose the image
 result = bg_img .* cat(3, mask, mask, mask) + dest_img;
-figure, imshow(result);
+%figure, imshow(result);
 imwrite(result, 'Van_Gogh_in_Osaka.png');
 
 %%  
@@ -123,7 +117,7 @@ before_img = showCorrespondence(imgs, imgd, xs, xd);
 imwrite(before_img, 'before_ransac.png');
 
 % Use RANSAC to reject outliers
-ransac_n = 30;      % Max number of iteractions
+ransac_n = 50;      % Max number of iterations
 ransac_eps = 2;   % Acceptable alignment error 
 
 [inliers_id, H_3x3] = runRANSAC(xs, xd, ransac_n, ransac_eps);
@@ -140,11 +134,11 @@ function challenge1d()
 [horse, horse_map, horse_mask] = imread('escher_horsemen.png');
 blended_result = blendImagePair(fish, fish_mask, horse, horse_mask,...
     'blend');
-figure, imshow(blended_result);
+%figure, imshow(blended_result);
 imwrite(blended_result, 'blended_result.png');
 
 overlay_result = blendImagePair(fish, fish_mask, horse, horse_mask, 'overlay');
-figure, imshow(overlay_result);
+%figure, imshow(overlay_result);
 imwrite(overlay_result, 'overlay_result.png');
 
 %%
@@ -158,7 +152,7 @@ imgr = im2single(imread('mountain_right.png'));
 
 % You are free to change the order of input arguments
 stitched_img = stitchImg(imgl, imgc, imgr);
-figure, imshow(stitched_img);
+%figure, imshow(stitched_img);
 imwrite(stitched_img, 'mountain_panorama.png');
 
 %%
@@ -169,7 +163,6 @@ function challenge1f()
 img0 = im2single(imread('Bloomberg-0.jpg'));
 img1 = im2single(imread('Bloomberg-1.jpg'));
 img2 = im2single(imread('Bloomberg-2.jpg'));
-% img3 = im2single(imread('Bloomberg-3.jpg'));
 
 % You are free to change the order of input arguments
 stitched_img = stitchImg(img0, img1, img2);

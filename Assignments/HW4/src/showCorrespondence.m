@@ -14,5 +14,5 @@ function result_img = ...
     end
      
     result_img = saveAnnotatedImg(fh);
-    % delete(fh);
+    close(fh);
 end

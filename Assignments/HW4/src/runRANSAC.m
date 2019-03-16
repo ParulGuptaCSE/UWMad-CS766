@@ -17,14 +17,6 @@ end
 
 function inliers_idx = getInliers(H, x_s, x_d, err)
     transformed_pts = applyHomography(H, x_s);
-    inliers_idx = zeros(size(x_d, 1));
-    inl_idx = 1;
-    for idx = 1 : size(x_d, 1)
-        l2_norm = norm(transformed_pts(idx, :) - x_d(idx, :));
-        if l2_norm < err
-            inliers_idx(inl_idx) = idx;
-            inl_idx = inl_idx + 1;
-        end
-    end
-    inliers_idx = inliers_idx(1 : inl_idx - 1);
+    l2_norm = vecnorm(transformed_pts - x_d, 2, 2);
+    inliers_idx = find(l2_norm < err)';
 end
