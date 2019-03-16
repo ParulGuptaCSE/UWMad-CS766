@@ -15,6 +15,8 @@ Inorder to remove sharp boundaries in the panorama after stitching images, the i
 ### Challenge 1(e, f) - Stitching Images:
 All the subroutines written above are called to build the panorama. This method accepts arbitrary number of images and aligns them to stitch into a panorama.
 
+For part 1e, the custom images are stitched to a file called `manhattan_panorama.png`.
+
 Here are some beautiful sample panoramas created by this tool:
 
 ![Mountains](mountain_panorama.png?raw=true "Mountains")
