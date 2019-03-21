@@ -29,7 +29,7 @@ runTests(varargin, fun_handles);
 function honesty()
 % Type your full name and uni (both in string) to state your agreement 
 % to the Code of Academic Integrity.
-signAcademicHonestyPolicy('Peter Parker', 'pp117');
+signAcademicHonestyPolicy('Rohit Kumar Sharma', 'rsharma54');
 
 %--------------------------------------------------------------------------
 % Tests for Challenge 1: Photometric Stereo
