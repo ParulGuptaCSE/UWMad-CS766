@@ -1,7 +1,7 @@
 function light_dirs_5x3 = computeLightDirections(center, radius, img_cell)
     light_dirs_5x3 = zeros(5, 3);
     for i = 1 : 5
-        img = img_cell{i};
+        img = im2double(img_cell{i});
         [max_intensity, idx] = max(img(:));
         [max_int_r, max_int_c] = ind2sub(size(img), idx);
         
