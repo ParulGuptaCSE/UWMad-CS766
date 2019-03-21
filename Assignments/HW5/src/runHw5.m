@@ -113,4 +113,4 @@ surf_img = reconstructSurf(normals, mask);
 imwrite(surf_img, 'vase_surface.png');
 
 % Use the surf tool to visualize the 3D reconstruction
-%figure, surf(im2double(imresize(surf_img, 0.3)));
+figure, surf(im2double(imresize(surf_img, 0.3)));
