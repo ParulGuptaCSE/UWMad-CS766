@@ -1,7 +1,7 @@
 function light_dirs_5x3 = computeLightDirections(center, radius, img_cell)
     light_dirs_5x3 = zeros(size(img_cell, 1), 3);
     for i = 1 : size(img_cell, 1)
-        img = im2double(img_cell{i});
+        img = double(img_cell{i});
         [max_intensity, idx] = max(img(:));
         [max_int_r, max_int_c] = ind2sub(size(img), idx);
         
@@ -10,9 +10,10 @@ function light_dirs_5x3 = computeLightDirections(center, radius, img_cell)
         dir_z = sqrt(radius^2 - (dir_x^2 + dir_y^2));
         
         % Let the magnitude be the max intensity
-        dir_x = dir_x / (dir_x^2 + dir_y^2 + dir_z^2) * max_intensity;
-        dir_y = dir_y / (dir_x^2 + dir_y^2 + dir_z^2) * max_intensity;
-        dir_z = dir_z / (dir_x^2 + dir_y^2 + dir_z^2) * max_intensity;
+        old_norm = sqrt(dir_x^2 + dir_y^2 + dir_z^2);
+        dir_x = dir_x / old_norm * max_intensity;
+        dir_y = dir_y / old_norm * max_intensity;
+        dir_z = dir_z / old_norm * max_intensity;
         
         light_dirs_5x3(i, 1) = -dir_x;
         light_dirs_5x3(i, 2) = -dir_y;
