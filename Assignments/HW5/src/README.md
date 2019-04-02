@@ -10,7 +10,7 @@ Consider a point `(x, y)` inside the orthographic projected circle in xy-plane. 
 
 **Finding the direction of light source:**
 
-The brightness of a surface that obeys a Lambertian model is directly proportional to the dot product of the surface normal and the light source direction (from Lambertian Model slides). Thus, for a sphere, the normal vector at the surface point which is brightest is the direction of the light source (`Cos0 = 1`). Even after orghographic projection, the x and y coordinates of the brightest point doesn't change. Thus, we can use the x and y coordinates of the brightest point in the orthographic projection and compute the normal vector at that location as described above to find the direction of the light source.
+The brightness of a surface that obeys a Lambertian model is directly proportional to the dot product of the surface normal and the light source direction (from Lambertian Model slides). Thus, for a sphere, the normal vector at the surface point which is brightest is the direction of the light source (`Cos0 = 1`). Even after orghographic projection, the x and y coordinates of the brightest point doesn't change. Thus, we can use the x and y coordinates of the brightest point in the orthographic projection and compute the normal vector at that location as described above to find the direction of the light source. Since the direction of light is opposite the direction of the normal vector, we just invert all the signs of the coordinates in the resulting vector to get the direction of light.
 
 ### Challenge 1d:
 The below visualization shows the 3D shape that has been reconstructed for a vase which was photographed in 5 different light conditions.
