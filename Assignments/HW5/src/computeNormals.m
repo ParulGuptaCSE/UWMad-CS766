@@ -4,6 +4,10 @@ function [normals, albedo_img] = ...
     [img_ht, img_wid] = size(mask);
     normals = zeros(img_ht, img_wid, 3);
     albedo_img = zeros(img_ht, img_wid);
+    
+    % Make the surface normals for the background pixels look at the camera
+    normals(:, :, 3) = 1;
+    
     for r = 1 : img_ht
         for c = 1 : img_wid
             if mask(r, c) > 0
