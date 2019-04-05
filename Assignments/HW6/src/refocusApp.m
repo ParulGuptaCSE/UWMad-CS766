@@ -1,7 +1,7 @@
 function refocusApp(rgb_stack, depth_map)
     [ht, wid] = size(depth_map);
     
-    figure, imshow(rgb_stack(:, :, 1:3));
+    figure('Name', 'Refocusing App'), imshow(rgb_stack(:, :, 1:3));
     
     [y, x] = ginput(1);
     x = round(x); y = round(y);
