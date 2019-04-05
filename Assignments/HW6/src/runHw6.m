@@ -28,7 +28,7 @@ runTests(varargin, fun_handles);
 function honesty()
 % Type your full name and uni (both in string) to state your agreement 
 % to the Code of Academic Integrity.
-signAcademicHonestyPolicy('Peter Parker', 'pp117');
+signAcademicHonestyPolicy('Rohit Kumar Sharma', 'rsharma54');
 
 
 %--------------------------------------------------------------------------
@@ -51,7 +51,7 @@ focal_stack_dir = 'stack';
 % gray_stack is an mxnxk matrix.
 
 % Specify the (half) window size used for focus measure computation
-%half_window_size = ??; 
+half_window_size = 5; 
 
 % Generate an index map, here we will only use the gray-scale images
 index_map = generateIndexMap(gray_stack, half_window_size);
