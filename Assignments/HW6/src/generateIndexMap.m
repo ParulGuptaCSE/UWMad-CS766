@@ -6,12 +6,13 @@ function index_map = generateIndexMap(gray_stack, w_size)
     avg_filter = fspecial('average', [2 * w_size, 2 * w_size]);
     
     for i = 1 : num_imgs
-        % grad2_x = gradient_x(gradient_x(gray_stack(:, :, i)));
-        % grad2_y = gradient_y(gradient_y(gray_stack(:, :, i)));
+        grad2_x = gradient_x(gradient_x(gray_stack(:, :, i)));
+        grad2_y = gradient_y(gradient_y(gray_stack(:, :, i)));
         
-        % laplacian = grad2_x .* grad2_x + grad2_y .* grad2_y;
+        laplacian_img = grad2_x .* grad2_x + grad2_y .* grad2_y;
         
-        laplacian_img = imfilter(gray_stack(:, :, i), lap_filter);
+        % Using laplacian filter to generate laplacian instead
+        % laplacian_img = imfilter(gray_stack(:, :, i), lap_filter);
         focus_map(:, :, i) = imfilter(laplacian_img, avg_filter);
     end
     
