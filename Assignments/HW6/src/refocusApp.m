@@ -3,7 +3,7 @@ function refocusApp(rgb_stack, depth_map)
     padding = 50;
     
     canvas = padarray(rgb_stack(:, :, 1:3), [padding padding], 'both');
-    figure('Name', 'Refocusing App'), imshow(canvas);
+    fig = figure('Name', 'Refocusing App'); imshow(canvas);
     
     [y, x] = ginput(1);
     x = round(x) - padding; y = round(y) - padding;
@@ -15,4 +15,5 @@ function refocusApp(rgb_stack, depth_map)
         [y, x] = ginput(1);
         x = round(x) - padding; y = round(y) - padding;
     end
+    close(fig);
 end

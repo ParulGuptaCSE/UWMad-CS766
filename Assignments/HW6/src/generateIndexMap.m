@@ -2,7 +2,8 @@ function index_map = generateIndexMap(gray_stack, w_size)
     num_imgs = size(gray_stack, 3);
     focus_map = zeros(size(gray_stack));
     
-    lap_filter = fspecial('laplacian');
+    % Using laplacian filter to generate laplacian instead
+    % lap_filter = fspecial('laplacian');
     avg_filter = fspecial('average', [2 * w_size, 2 * w_size]);
     
     for i = 1 : num_imgs
