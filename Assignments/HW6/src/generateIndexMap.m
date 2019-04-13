@@ -10,7 +10,7 @@ function index_map = generateIndexMap(gray_stack, w_size)
         grad2_x = gradient_x(gradient_x(gray_stack(:, :, i)));
         grad2_y = gradient_y(gradient_y(gray_stack(:, :, i)));
         
-        laplacian_img = grad2_x .* grad2_x + grad2_y .* grad2_y;
+        laplacian_img = abs(grad2_x) + abs(grad2_y);
         
         % Using laplacian filter to generate laplacian instead
         % laplacian_img = imfilter(gray_stack(:, :, i), lap_filter);
