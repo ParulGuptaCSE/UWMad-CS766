@@ -45,9 +45,9 @@ function debug1a()
 img1 = imread('simple1.png');
 img2 = imread('simple2.png');
 
-%search_half_window_size = ?;   % Half size of the search window
-%template_half_window_size = ?; % Half size of the template window
-%grid_MN = [?, ?];              % Number of rows and cols in the grid
+search_half_window_size = 2;   % Half size of the search window
+template_half_window_size = 2; % Half size of the template window
+grid_MN = [24, 32];              % Number of rows and cols in the grid
 
 result = computeFlow(img1, img2, search_half_window_size, template_half_window_size, grid_MN);
 imwrite(result, 'simpleresult.png');
@@ -59,15 +59,16 @@ for i = 1:length(img_list)
     img_stack{i} = imread(img_list{i});
 end
 
-%search_half_window_size = ?;   % Half size of the search window
-%template_half_window_size = ?; % Half size of the template window 
-%grid_MN = [?, ?];              % Number of rows and cols in the grid
+search_half_window_size = 4;   % Half size of the search window
+template_half_window_size = 4; % Half size of the template window 
+grid_MN = [24, 32];              % Number of rows and cols in the grid
 
 for i = 2:length(img_stack)
     result = computeFlow(img_stack{i-1}, img_stack{i},...
         search_half_window_size, template_half_window_size, grid_MN);
     imwrite(result, ['result' num2str(i-1) '_' num2str(i) '.png']);
 end
+
 %--------------------------------------------------------------------------
 % Tests for Challenge 2: Tracking with color histogram template
 %--------------------------------------------------------------------------
