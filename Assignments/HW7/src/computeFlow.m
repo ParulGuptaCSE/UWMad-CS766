@@ -2,8 +2,8 @@ function result = computeFlow(img1, img2, win_radius, template_radius, grid_MN)
     [ht, wid] = size(img1);
     result = zeros(grid_MN(1), grid_MN(2), 2);
     
-    for x = 1 : grid_MN(2)
-        for y = 1 : grid_MN(1)
+    for x = 151 : 150 + grid_MN(2)
+        for y = 111 : 110 + grid_MN(1)
             if x - win_radius > 0
                 src_x_strt = x - win_radius;
             else
@@ -47,10 +47,15 @@ function result = computeFlow(img1, img2, win_radius, template_radius, grid_MN)
             end
             
             src_template = img1(src_y_strt:src_y_end, src_x_strt:src_x_end);
+            % figure('Name', 'Source template'), imshow(src_template);
             dest_template = img2(dest_y_strt:dest_y_end, dest_x_strt:dest_x_end);
             cross_corr = normxcorr2(src_template, dest_template);
             [y_match, x_match] = find(cross_corr == max(cross_corr(:)));
-            result(y, x, :) = [y_match - y, x_match - x];
+            
+            % Transform the coordinates to original frame of reference
+            x_match = x_match + dest_x_strt;
+            y_match = y_match + dest_y_strt;
+            result(y - 110, x - 150, :) = [x_match - x, y_match - y];
         end
     end
 end

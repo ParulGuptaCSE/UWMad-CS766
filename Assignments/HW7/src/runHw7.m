@@ -46,7 +46,7 @@ img1 = imread('simple1.png');
 img2 = imread('simple2.png');
 
 search_half_window_size = 4;   % Half size of the search window
-template_half_window_size = 4; % Half size of the template window
+template_half_window_size = 20; % Half size of the template window
 grid_MN = [24, 32];              % Number of rows and cols in the grid
 
 result = computeFlow(img1, img2, search_half_window_size, template_half_window_size, grid_MN);
