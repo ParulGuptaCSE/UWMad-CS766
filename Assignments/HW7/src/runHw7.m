@@ -45,15 +45,12 @@ function debug1a()
 img1 = imread('simple1.png');
 img2 = imread('simple2.png');
 
-search_half_window_size = 4;   % Half size of the search window
-template_half_window_size = 20; % Half size of the template window
+search_half_window_size = 15;   % Half size of the search window
+template_half_window_size = 4; % Half size of the template window
 grid_MN = [24, 32];              % Number of rows and cols in the grid
 
 result = computeFlow(img1, img2, search_half_window_size, template_half_window_size, grid_MN);
-fig = figure;
-quiver(result(:, :, 1), result(:, :, 2));
-%imwrite(result, 'simpleresult.png');
-saveas(fig, 'simpleresult.png');
+imwrite(result, 'simpleresult.png');
 
 %%
 function challenge1a()
@@ -62,17 +59,14 @@ for i = 1:length(img_list)
     img_stack{i} = imread(img_list{i});
 end
 
-search_half_window_size = 7;   % Half size of the search window
-template_half_window_size = 24; % Half size of the template window 
+search_half_window_size = 24;   % Half size of the search window
+template_half_window_size = 12; % Half size of the template window 
 grid_MN = [24, 32];              % Number of rows and cols in the grid
 
 for i = 2:length(img_stack)
     result = computeFlow(img_stack{i-1}, img_stack{i},...
         search_half_window_size, template_half_window_size, grid_MN);
-    fig = figure;
-    quiver(result(:, :, 1), result(:, :, 2));
-    %imwrite(result, ['result' num2str(i-1) '_' num2str(i) '.png']);
-    saveas(fig, ['result' num2str(i-1) '_' num2str(i) '.png']);
+    imwrite(result, ['result' num2str(i-1) '_' num2str(i) '.png']);
 end
 
 %--------------------------------------------------------------------------
