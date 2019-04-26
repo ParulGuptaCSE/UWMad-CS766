@@ -38,7 +38,7 @@ function result = computeFlow(img1, img2, win_radius, template_radius, grid_MN)
     hold on;
     for y = round(ht / (grid_MN(1) + 1)) + 1 : round(ht / (grid_MN(1) + 1)) : ht
         for x = round(wid / (grid_MN(2) + 1)) + 1 : round(wid / (grid_MN(2) + 1)) : wid - round(wid / (grid_MN(2) + 1))
-            quiver(x, y, opticalFlow(y, x, 1), opticalFlow(y, x, 2), 'Color', 'b');
+            quiver(x, y, opticalFlow(y, x, 1), opticalFlow(y, x, 2), 'Color', 'y', 'MaxHeadSize', 1);
         end
     end
     result = saveAnnotatedImg(fig);
