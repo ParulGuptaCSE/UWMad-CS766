@@ -86,13 +86,13 @@ data_params.genFname = @(x)([sprintf('frame%d.png', x)]);
 % ****** IMPORTANT ******
 % In your submission, replace the call to "chooseTarget" with actual parameters
 % to specify the target of interest
-tracking_params.rect = chooseTarget(data_params);
-% tracking_params.rect = [xmin ymin width height];
+% tracking_params.rect = chooseTarget(data_params);
+tracking_params.rect = [190 63 43 125];
 
 % Half size of the search window
-% tracking_params.search_half_window_size = ?;
+tracking_params.search_half_window_size = 40;
 % Number of bins in the color histogram
-% tracking_params.bin_n = ?;                    
+tracking_params.bin_n = 32;                    
 
 % Pass the parameters to trackingTester (partial implementation below)
 trackingTester(data_params, tracking_params);
