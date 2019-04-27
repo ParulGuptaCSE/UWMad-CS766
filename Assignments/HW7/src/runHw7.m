@@ -80,8 +80,8 @@ function challenge2a
 %-------------------
 data_params.data_dir = 'walking_person';
 data_params.out_dir = 'walking_person_result';
-data_params.frame_ids = [1:20];
-data_params.genFname = @(x)([sprintf('frame%d.png', x)]);
+data_params.frame_ids = 1 : 20;
+data_params.genFname = @(x)(sprintf('frame%d.png', x));
 
 % ****** IMPORTANT ******
 % In your submission, replace the call to "chooseTarget" with actual parameters
@@ -90,9 +90,9 @@ data_params.genFname = @(x)([sprintf('frame%d.png', x)]);
 tracking_params.rect = [190 63 43 125];
 
 % Half size of the search window
-tracking_params.search_half_window_size = 40;
+tracking_params.search_half_window_size = 7;
 % Number of bins in the color histogram
-tracking_params.bin_n = 32;                    
+tracking_params.bin_n = 64;                    
 
 % Pass the parameters to trackingTester (partial implementation below)
 trackingTester(data_params, tracking_params);
@@ -110,13 +110,13 @@ data_params.genFname = @(x)([sprintf('frame%d.png', x)]);
 % ****** IMPORTANT ******
 % In your submission, replace the call to "chooseTarget" with actual parameters
 % to specify the target of interest
-tracking_params.rect = chooseTarget(data_params);
-% tracking_params.rect = [xmin ymin width height];
+% tracking_params.rect = chooseTarget(data_params);
+tracking_params.rect = [153 128 47 55];
 
 % Half size of the search window
-% tracking_params.search_half_window_size = ?;
+tracking_params.search_half_window_size = 7;
 % Number of bins in the color histogram
-% tracking_params.bin_n = ?;           
+tracking_params.bin_n = 64;           
 
 % Pass the parameters to trackingTester (partial implementation below)
 trackingTester(data_params, tracking_params);
@@ -134,13 +134,13 @@ data_params.genFname = @(x)([sprintf('frame%d.png', x)]);
 % ****** IMPORTANT ******
 % In your submission, replace the call to "chooseTarget" with actual parameters
 % to specify the target of interest
-tracking_params.rect = chooseTarget(data_params);
-% tracking_params.rect = [xmin ymin width height];
+% tracking_params.rect = chooseTarget(data_params);
+tracking_params.rect = [313 230 35 91];
 
 % Half size of the search window
-% tracking_params.search_half_window_size = ?;
+tracking_params.search_half_window_size = 7;
 % Number of bins in the color histogram
-% tracking_params.bin_n = ?;           
+tracking_params.bin_n = 64;           
 
 % Pass the parameters to trackingTester (partial implementation below)
 trackingTester(data_params, tracking_params);
