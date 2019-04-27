@@ -1,22 +1,24 @@
 function trackingTester(data_params, tracking_params)
     img = imread(fullfile(data_params.data_dir, data_params.genFname(data_params.frame_ids(1))));
     % figure, imshow(img);
+
+    obj_rect = tracking_params.rect;
+    num_hist_bins = tracking_params.bin_n;
+    search_window_size = tracking_params.search_half_window_size;
     
-    src_template = img(tracking_params.rect(2) : tracking_params.rect(2) + tracking_params.rect(4), tracking_params.rect(1) : tracking_params.rect(1) + tracking_params.rect(3), :);
+    src_template = img(obj_rect(2):obj_rect(2) + obj_rect(4), obj_rect(1):obj_rect(1) + obj_rect(3), :);
     % figure, imshow(src_template);
     
     [src_temp_ind, src_temp_map] = rgb2ind(src_template, 32);
-    src_temp_hist = histc(src_temp_ind(:), 1:tracking_params.bin_n);
-    
-    obj_rect = tracking_params.rect;
+    src_temp_hist = histc(src_temp_ind(:), 1:num_hist_bins);
     
     for i = data_params.frame_ids
         dest_search_img = imread(fullfile(data_params.data_dir, data_params.genFname(i)));
         [ht, wid, ~] = size(dest_search_img);
-        dest_x_strt = max(1, obj_rect(1) - tracking_params.search_half_window_size);
-        dest_x_end = min(wid, obj_rect(1) + obj_rect(3) + tracking_params.search_half_window_size);
-        dest_y_strt = max(1, obj_rect(2) - tracking_params.search_half_window_size);
-        dest_y_end = min(ht, obj_rect(2) + obj_rect(4) + tracking_params.search_half_window_size);
+        dest_x_strt = max(1, obj_rect(1) - search_window_size);
+        dest_x_end = min(wid, obj_rect(1) + obj_rect(3) + search_window_size);
+        dest_y_strt = max(1, obj_rect(2) - search_window_size);
+        dest_y_end = min(ht, obj_rect(2) + obj_rect(4) + search_window_size);
         
         search_window = dest_search_img(dest_y_strt:dest_y_end, dest_x_strt:dest_x_end, :);
         % figure, imshow(search_window);
@@ -28,7 +30,7 @@ function trackingTester(data_params, tracking_params)
         for j = 1 : size(search_windows, 2)
             % figure, imshow(curr_window);
             curr_wind_ind = rgb2ind(search_windows(:, j, :), src_temp_map);
-            curr_wind_hist = histc(curr_wind_ind(:), 1:tracking_params.bin_n);
+            curr_wind_hist = histc(curr_wind_ind(:), 1:num_hist_bins);
             
             similarity(j) = norm(src_temp_hist - curr_wind_hist);
         end
