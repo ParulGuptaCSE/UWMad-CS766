@@ -42,5 +42,5 @@ function result = computeFlow(img1, img2, win_radius, template_radius, grid_MN)
         end
     end
     result = saveAnnotatedImg(fig);
-    % close(fig);
+    close(fig);
 end
